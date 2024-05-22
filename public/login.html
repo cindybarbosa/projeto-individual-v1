@@ -1,110 +1,56 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AquaTech | Login</title>
-
-    <script src="./js/sessao.js"></script>
-
-    <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <title>Document</title>
+    <link rel="stylesheet" href="styleLogin.css">
 </head>
 
 <body>
-
-    <!--Header-->
-
     <div class="header">
         <div class="container">
-            <h1 class="titulo">AquaTech</h1>
-            <ul class="navbar">
-                <li>
-                    <a href="index.html">Inicial</a>
-                </li>
-                <li>
-                    <a href="simulador.html">Simulador</a>
-                </li>
-                <li>|</li>
-                <li class="agora">
-                    <a href="#">Login</a>
-                </li>
-                <li>
-                    <a href="cadastro.html">Cadastro</a>
-                </li>
-            </ul>
+            <h1 class="titulo">HAIR BEAUTY</h1>
         </div>
     </div>
-
-
-    <div class="login">
-        <div class="alerta_erro">
-            <div class="card_erro" id="cardErro">
-                <span id="mensagem_erro"></span>
-            </div>
-        </div>
+    <div class="banner">
         <div class="container">
-            <div class="card card-login">
-                <h2>Olá de volta!</h2>
-                <div class="formulario">
-                    <div class="campo">
-                        <span>E-mail:</span>
-                        <input id="email_input" type="text" placeholder="Login">
-                    </div>
-                    <div class="campo">
-                        <span>Senha:</span>
-                        <input id="senha_input" type="password" placeholder="******">
-                    </div>
-                    <button class="botao" onclick="entrar()">Entrar</button>
-                </div>
+            <div class="label">
+                <label>
+                    <div class="login">Login</div>
 
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
+                    <input class="inputs" type="text" id="input_email" placeholder="Email">
 
-                <div id="div_erros_login"></div>
+                    <input class="inputs" type="password" id="input_senha" placeholder="Senha">
+
+                    <button class="botao" onclick="entrar()" href="dicas.html">Entrar
+                        <a href=""></a></button>
+                    <div id="msg"></div>
+                </label>
             </div>
         </div>
     </div>
-
-    <!--footer inicio-->
-    <div class="footer">
-        <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
-        </div>
-    </div>
-    <!--footer fim-->
-
 </body>
 
 </html>
-
 <script>
-
+    var limite = 0;
 
     function entrar() {
-        aguardar();
 
-        var emailVar = email_input.value;
-        var senhaVar = senha_input.value;
+        var email = input_email.value;
+        var senha = input_senha.value;
 
-        if (emailVar == "" || senhaVar == "") {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
-            return false;
+        for(var cont = 0; cont < limite; cont ++){
+            if(email == email && senha == senha){
+                mensagem.innerHTML += `Carregando...`;
+                tentativas = 3
+                setTimeout(function (){
+                    window.location.href = "../hair-beauty/dicas.html"
+                }, 2000);
+            }
         }
-        else {
-            setInterval(sumirMensagem, 5000)
-        }
-
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
 
         fetch("/usuarios/autenticar", {
             method: "POST",
@@ -112,8 +58,8 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                emailServer: emailVar,
-                senhaServer: senhaVar
+                emailServer: email,
+                senhaServer: senha
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -127,10 +73,10 @@
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
+                
 
                     setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
+                        window.location = "dicas.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
@@ -152,8 +98,17 @@
         return false;
     }
 
-    function sumirMensagem() {
-        cardErro.style.display = "none"
-    }
 
+        // if (limite < 3) {
+        //     if (email === '' && senha === '') {
+        //         mensagem.innerHTML += `Carregando...`;
+        //         limite++;
+        //         setTimeout(function () {
+        //             window.location.href = "../dicas/dicas.html";
+        //         }, 2000);
+
+        //     }
+
+        // }
+    
 </script>
